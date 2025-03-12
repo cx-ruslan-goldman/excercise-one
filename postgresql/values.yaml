@@ -8,7 +8,7 @@ postgresql:
   persistence:
     enabled: true
     size: 10Gi # Adjust size as needed
-    storageClass: "standard" # Or your preferred StorageClass
+    storageClass: "manual" # Or your preferred StorageClass
   resources:
     requests:
       cpu: 250m

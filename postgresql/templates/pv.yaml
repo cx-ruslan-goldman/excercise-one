@@ -13,7 +13,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain # Or Delete
   storageClassName: manual # Must match the storageClassName in the PVC (or be omitted if no storageClassName is used in the PVC)
   local:
-    path: /mnt/data/postgres # Path on the node where the storage is located
+    path: /tmp/data/postgres
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -21,4 +21,4 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - your-node-hostname # Replace with the actual node hostname
+                - k3d-k3s-default-server-0

@@ -12,7 +12,7 @@ spec:
   containers:
   - name: worker
     image: postgres:latest
-    command: ['sh', '-c', 'export PGPASSWORD=$POSTGRES_PASSWORD; psql -h $POSTGRES_HOST -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE TABLE IF NOT EXISTS time_logs (timestamp TIMESTAMP WITH TIME ZONE); INSERT INTO time_logs (timestamp) VALUES (NOW()); SELECT * FROM time_logs;"']
+    command: ['sh', '-c', 'export PGPASSWORD="password123"; psql -h "postgresql-postgresql" -U "postgres" -d "mydb" -c "CREATE TABLE IF NOT EXISTS time_logs (timestamp TIMESTAMP WITH TIME ZONE); INSERT INTO time_logs (timestamp) VALUES (NOW()); SELECT * FROM time_logs;"']
     env:
     - name: POSTGRES_HOST
       value: "postgresql-postgresql" # Replace with your Postgres service name

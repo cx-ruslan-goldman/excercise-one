@@ -1,0 +1,50 @@
+pipelineJob('Dynamic Kubernetes Worker with Postgres Time Logging') {
+    description('Launches dynamic Kubernetes worker pods to record date and time into a Postgres database.')
+    triggers {
+        cron('H/5 * * * *') // Run every 5 minutes
+    }
+    definition {
+        cps {
+            script("""
+                pipeline {
+                    agent {
+                        kubernetes {
+                            label 'dynamic-worker'
+                            yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: dynamic-worker
+spec:
+  containers:
+  - name: worker
+    image: postgres:latest # Or a custom image with psql
+    command: ['sh', '-c', 'export PGPASSWORD=$POSTGRES_PASSWORD; psql -h $POSTGRES_HOST -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE TABLE IF NOT EXISTS time_logs (timestamp TIMESTAMP WITH TIME ZONE); INSERT INTO time_logs (timestamp) VALUES (NOW()); SELECT * FROM time_logs;"']
+    env:
+    - name: POSTGRES_HOST
+      value: "postgresql-postgresql" # Replace with your Postgres service name
+    - name: POSTGRES_USER
+      value: "postgres" # Replace with your Postgres user
+    - name: POSTGRES_PASSWORD
+      value: "password123" # Replace with your Postgres password or use a secret
+    - name: POSTGRES_DB
+      value: "mydb" #Replace with your Database name.
+                            '''
+                        }
+                    }
+                    stages {
+                        stage('Run Worker') {
+                            steps {
+                                sh 'echo "Worker pod started"'
+                                sh 'sleep 10' // Allow time for the pod to complete. Adjust as needed.
+                                sh 'echo "Worker pod finished"'
+                            }
+                        }
+                    }
+                }
+            """)
+            sandbox()
+        }
+    }
+}

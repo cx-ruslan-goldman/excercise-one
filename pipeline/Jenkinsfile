@@ -11,7 +11,7 @@ metadata:
 spec:
   containers:
   - name: worker
-    image: postgres:latest
+    image: postgres:14
     command: ['sh', '-c', 'export PGPASSWORD="password123"; psql -h "postgresql-postgresql" -U "postgres" -d "mydb" -c "CREATE TABLE IF NOT EXISTS time_logs (timestamp TIMESTAMP WITH TIME ZONE); INSERT INTO time_logs (timestamp) VALUES (NOW()); SELECT * FROM time_logs;"']
     env:
     - name: POSTGRES_HOST

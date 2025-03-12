@@ -1,0 +1,28 @@
+pipeline {
+    agent {
+        kubernetes {
+            label 'dynamic-worker' //or remove this line.
+            yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: test-pod
+spec:
+  containers:
+  - name: test
+    image: busybox:latest
+    command: ['sleep', '3600']
+            """
+        }
+    }
+    stages {
+        stage('Test Pod') {
+            steps {
+                script {
+                    echo 'Test pod started'
+                }
+            }
+        }
+    }
+}

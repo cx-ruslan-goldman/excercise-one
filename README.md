@@ -5,10 +5,10 @@ excercise-one
 
 #2 the official jenkins chart can be used
 
-helm repo add jenkins https://charts.jenkins.io
-helm repo update
-helm pull jenkins/jenkins
-tar xvf jenkins-*.tgz
+    - helm repo add jenkins https://charts.jenkins.io
+    - helm repo update
+    - helm pull jenkins/jenkins
+    - tar xvf jenkins-*.tgz
 
 after running jenkins
 1. Get your 'admin' user password by running:
